@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import CartIcon from 'react-native-vector-icons/MaterialIcons';
 import productsData from '../data/Products.json';
-import PlusIcon from 'react-native-vector-icons/FontAwesome'
+import PlusIcon from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+let storeItemsObj
 
 const Home = ({ navigation }) => {
     const [products, setProducts] = useState([productsData])
-    // console.log(JSON.stringify(productsData).products);
 
     const productItems = [
         {
@@ -111,6 +112,24 @@ const Home = ({ navigation }) => {
         }
     ]
 
+    const storeItem = async (item)=>{
+        const itemObj = {
+            name:item.name,
+            price:item.price
+        }
+        const data = await AsyncStorage.getItem('storeItems')
+        if(!data){
+            storeItemsObj = []
+        }
+        else{
+            storeItemsObj = JSON.parse(data)
+        }
+        storeItemsObj.push(itemObj)
+        await AsyncStorage.setItem('storeItems',JSON.stringify(storeItemsObj))
+
+
+
+    }
 
     const productCard = ({ item }) => {
         return (
@@ -121,7 +140,7 @@ const Home = ({ navigation }) => {
                 </View>
                 <TouchableOpacity style={styles.addButton}
                 onPress={()=>{
-                    // navigation.navigate('Cart')
+                    storeItem(item)
                 }}
                 >
                     <PlusIcon
