@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Cart = () => {
     const [addedItems, setaddedItems] = useState([])
 
+    // get products to AsyncStorage
     const getData = async () => {
         try {
             const data = await AsyncStorage.getItem('storeItems')
@@ -15,11 +16,10 @@ const Cart = () => {
             console.log(e);
         }
     }
-
     useEffect(() => {
         getData()
     }, [])
-    
+
     const productCard = ({ item }) => {
         return (
             <View style={styles.productDiv}>
@@ -27,13 +27,6 @@ const Cart = () => {
                     <Text style={styles.text}>{item.name}</Text>
                     <Text style={[styles.text, styles.price]}>{item.price}rs.</Text>
                 </View>
-                {/* <TouchableOpacity style={styles.addButton}>
-                <PlusIcon
-                name='plus'
-                size={20}
-                color='#000'
-                 />
-            </TouchableOpacity> */}
             </View>
         )
 
@@ -50,14 +43,14 @@ const Cart = () => {
                         getData();
                     }}
                 >
-                    <Text style={{ fontWeight: '800' }}>Clear cart</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#fff' }}>Clear cart</Text>
                 </TouchableOpacity>
             </View>
-            <FlatList
+            {!addedItems ? <Text style={styles.emptyText}>Your cart is empty</Text> : <FlatList
                 data={addedItems}
                 renderItem={productCard}
                 keyExtractor={item => item.id}
-            />
+            />}
         </View>
     )
 }
@@ -124,6 +117,17 @@ const styles = StyleSheet.create({
     clearButton: {
         padding: 10,
         borderWidth: 1,
-
+        backgroundColor: 'grey',
+        borderRadius: 5
+    },
+    emptyText: {
+        textAlign: 'center',
+        fontSize: 24,
+        paddingVertical: 10,
+        color: 'red',
+        letterSpacing: 1,
+        borderColor: 'red',
+        borderWidth: 1,
+        marginVertical: 10
     }
 })

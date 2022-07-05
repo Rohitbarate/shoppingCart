@@ -24,7 +24,13 @@ export default function App() {
           fontSize:24,
           fontWeight:'bold',
         }}} />
-        <Stack.Screen name="Cart" component={Cart} options={{title:'Your Cart'}} />
+        <Stack.Screen name="Cart" component={Cart} options={{
+          title:'Your Cart',
+          headerTitleStyle:{
+            fontSize:24,
+            fontWeight:'bold',
+          }
+          }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
