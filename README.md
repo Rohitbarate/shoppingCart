@@ -1,7 +1,7 @@
 # shoppingCart
 
 This is the simple project thet you can search the products and add it to the your shopping cart 
-![shoppingcart3](https://user-images.githubusercontent.com/90303131/177312572-f381269e-4273-41fa-a3a6-6625e95653b0.jpg)
+![shoppingcart3](https://user-images.githubusercontent.com/90303131/177312572-f381269e-4273-41fa-a3a6-6625e95653b0.jpg =250x250 )
 
 this os the shopping cart 
 
