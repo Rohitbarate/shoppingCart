@@ -2,14 +2,17 @@ import React from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from './components/screens/Home';
-import Cart from './components/screens/Cart';
+import Home from './src/components/screens/Home';
+import Cart from './src/components/screens/Cart';
+import { Provider } from 'react-redux';
+import store from './src/redux/store';
 
 export default function App() {
 
   const Stack = createNativeStackNavigator();
   return (
-    <NavigationContainer>
+   <Provider store={store} >
+     <NavigationContainer>
     <StatusBar 
       hidden={false}
     />
@@ -33,5 +36,6 @@ export default function App() {
           }} />
       </Stack.Navigator>
     </NavigationContainer>
+   </Provider>
   );
 }

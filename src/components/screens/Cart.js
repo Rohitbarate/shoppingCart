@@ -2,30 +2,50 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import PlusIcon from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { removeItem } from '../../redux/actions';
 
 
 const Cart = () => {
     const [addedItems, setaddedItems] = useState([])
+    const dispatch = useDispatch()
+
+    const items = useSelector(state=>{return state});
+
+
+const removeItemFromCart = (item)=>{
+    dispatch(removeItem(item))
+}
 
     // get products to AsyncStorage
-    const getData = async () => {
-        try {
-            const data = await AsyncStorage.getItem('storeItems')
-            setaddedItems(JSON.parse(data))
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    // const getData = async () => {
+    //     try {
+    //         const data = await AsyncStorage.getItem('storeItems')
+    //         setaddedItems(JSON.parse(data))
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
     useEffect(() => {
-        getData()
-    }, [])
+        setaddedItems(items)
+    //    console.log(items);
+    }, [items])
 
-    const productCard = ({ item }) => {
+    const productCard = ({ item,i},index) => {
+        console.log(index);
         return (
             <View style={styles.productDiv}>
                 <View style={styles.productInfo}>
+                    <Text style={styles.text}>{i}</Text>
                     <Text style={styles.text}>{item.name}</Text>
                     <Text style={[styles.text, styles.price]}>{item.price}rs.</Text>
+                    <TouchableOpacity style={styles.clearButton}
+                    onPress={async () => {
+                        removeItemFromCart(item)
+                    }}
+                >
+                    <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#fff' }}>Clear cart</Text>
+                </TouchableOpacity>
                 </View>
             </View>
         )
@@ -37,20 +57,14 @@ const Cart = () => {
         <View style={styles.mainContainer}>
             <View style={styles.row}>
                 <Text style={styles.headText}>Available Items</Text>
-                <TouchableOpacity style={styles.clearButton}
-                    onPress={async () => {
-                        await AsyncStorage.removeItem('storeItems');
-                        getData();
-                    }}
-                >
-                    <Text style={{ fontWeight: 'bold', fontSize: 12, color: '#fff' }}>Clear cart</Text>
-                </TouchableOpacity>
+                
             </View>
-            {!addedItems ? <Text style={styles.emptyText}>Your cart is empty</Text> : <FlatList
+            {!addedItems.length==0?
+            <FlatList
                 data={addedItems}
                 renderItem={productCard}
                 keyExtractor={item => item.id}
-            />}
+            />: <Text style={styles.emptyText}>Your cart is empty</Text> }
         </View>
     )
 }

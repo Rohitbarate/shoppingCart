@@ -1,5 +1,5 @@
-{
-    "products": [
+
+   export const productsData = [
         {
             "id": 1,
             "name": "Milk",
@@ -101,4 +101,3 @@
             "price": 120
         }
     ]
-}
